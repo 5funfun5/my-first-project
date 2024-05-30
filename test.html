@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var socket;
+    console.log(typeof socket)
+    if (typeof(WebSocket)=="undefined"){
+        alert("您的浏览器不支持WebSocket");
+    }else{
+        // alert("您的浏览器支持WebSocket");
+
+        socket=new WebSocket("ws://192.168.31.85:8080/ws/timelineBroadcastEndpoint/11");
+
+        socket.onopen=function () {
+            console.log("Socket 已打开");
+            console.log(socket);
+        };
+
+        //获得消息事件
+        socket.onmessage = function(msg) {
+            console.log(msg.data);
+            //发现消息进入    调后台获取
+            //getCallingList();
+        };
+
+        //关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+        };
+        /**
+         $(window).unload(function(){
+                socket.close();
+            });
+         */
+    }
+    function onClick(){
+        console.log("onClick11111")
+        socket.send("{\"code\":20001,\"content\":\"123456\"}");
+    }
+</script>
+<input type="button" onclick="onClick()" value="测试发送进球数据"/>
+</body>
+</html>
